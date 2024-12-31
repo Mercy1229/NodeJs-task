@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const Users = require("./model.js");
+const User = require("./model.js");
 const app = express();
 
 app.use(express.json());
@@ -25,9 +25,8 @@ app.get("/", async (req, res) => {
 
 app.post("/user", async (req, res) => {
   try {
-    const name = req.body.name;
-    const email = req.body.email;
-    const newUser = new Users({ name, email });
+    const {name,email} = req.body
+    const newUser = new User({ name, email });
     const savedUser = await newUser.save();
     res
       .status(200)
