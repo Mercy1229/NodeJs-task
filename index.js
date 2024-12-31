@@ -2,7 +2,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 const User = require("./model.js");
 const app = express();
-
+const dotenv=require('dotenv')
+const path=require('path')
+dotenv.config({path:path.join(__dirname,'config','config.env')})
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -23,6 +25,7 @@ app.get("/", async (req, res) => {
   res.send("Welcome!");
 });
 
+// Post Data
 app.post("/user", async (req, res) => {
   try {
     const {name,email} = req.body
@@ -37,6 +40,28 @@ app.post("/user", async (req, res) => {
   }
 });
 
-app.listen(3000, () => {
-  console.log("Server is running on port 3000...");
+// Get all data
+app.get('/user', async (req, res) => {
+  try {
+      const user = await User.find();
+      res.json(user);
+  } catch (error) {
+      res.status(500)
+          .json({ error: error.message });
+  }
+});
+
+// Get By Id
+app.get('/user/:id', async (req, res) => {
+  try {
+      const user = await User.findById(req.params.id);
+      res.json(user);
+  } catch (error) {
+      res.status(500)
+          .json({ error: error.message });
+  }
+});
+
+app.listen(process.env.PORT, () => {
+  console.log(`Server is running on port ${process.env.PORT} ...`);
 });
