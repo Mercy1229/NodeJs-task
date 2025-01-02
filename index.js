@@ -10,9 +10,7 @@ app.use(express.urlencoded({ extended: true }));
 
 const connectToDB = async () => {
   try {
-    await mongoose.connect(
-      "mongodb+srv://mercysamuel1229:f1nyvejqJJdqNPO5@samplecluster.f1syk.mongodb.net/employee"
-    );
+    await mongoose.connect(process.env.DB_URL);
     console.log(`Connected to MongoDB: ${mongoose.connection.host}`);
   } catch (err) {
     console.error("Error connecting to MongoDB:", err);
